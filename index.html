@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Water Quest | Clean water changes everything</title><link rel="stylesheet" href="style.css"><script src="script.js" defer></script></head>
+<body>
+<header><a class="brand" href="https://www.charitywater.org/" target="_blank" rel="noopener">▰ charity: water</a><span>PROJECT 05 / GAME PROTOTYPE</span></header>
+<main>
+<section class="intro"><p class="eyebrow">SMALL ACTIONS. BIG IMPACT.</p><h1>Every drop<br><span>counts.</span></h1><p>Play Water Quest. Collect yellow jerry cans, dodge dirty water, and race toward a cleaner future.</p><p class="mission">Inspired by charity: water’s mission to bring clean and safe drinking water to people around the world.</p></section>
+<section class="game" aria-label="Water Quest game">
+<div class="game-title"><h2>Water Quest</h2><span>30 SECOND CHALLENGE</span></div>
+<div class="stats"><div>SCORE<strong id="score">0</strong></div><div>TIME LEFT<strong><span id="time">30</span><small>s</small></strong></div><div>GOAL<strong>15<small> pts</small></strong></div></div>
+<div class="progress" role="progressbar" aria-label="Progress toward 15 points" aria-valuemin="0" aria-valuemax="15" aria-valuenow="0"><div id="progress"></div></div>
+<div id="board" class="board" aria-label="Game targets"></div>
+<p id="feedback" role="status" aria-live="polite">Ready to make a splash? Press Start.</p>
+<div class="controls"><button id="start" class="primary">Start game <span>→</span></button><button id="reset" class="secondary">Reset</button></div>
+<div class="legend"><span>🟨 Jerry can <b>+1</b></span><span>💩 Dirty water <b>−2</b></span></div>
+<p class="instructions">Tap or click a target before it moves. Keyboard: Tab to a target and press Enter or Space. Reach 15 points before time runs out to win.</p>
+</section>
+</main>
+<footer><span>A student project by TJ Roundtree · Not an official charity: water game</span><a href="https://www.charitywater.org/" target="_blank" rel="noopener">Learn about clean water ↗</a><p>Game points are for play only and do not represent donations or water delivered.</p></footer>
+<div id="confetti" aria-hidden="true"></div>
+</body></html>
