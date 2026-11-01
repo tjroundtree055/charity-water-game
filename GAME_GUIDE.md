@@ -1,35 +1,32 @@
 # Water Quest
 
-A student-built charity: water inspired prototype using HTML, CSS and plain JavaScript. No installation or build step is needed. Open index.html locally to play.
+A charity: water inspired student game using HTML, CSS, and plain JavaScript.
+
+Play: https://tjroundtree055.github.io/charity-water-game/
 
 ## Rules
-- Press Start to begin a 30-second round.
-- Click yellow jerry cans for +1 point.
-- Avoid dirty water targets, which subtract 2 points (score cannot go below zero).
-- Targets move every 900 milliseconds.
-- Reach 15 points before the timer expires to win.
-- Reset clears the score, timer, targets, and celebration. Play again starts a fresh round.
-- Keyboard users can Tab through targets and press Enter or Space.
+Choose a difficulty before pressing Start.
 
-## LevelUps
-1. Obstacle that reduces the player's score.
-2. Reset button.
-3. Confetti celebration on winning, with reduced-motion preferences respected.
+| Mode | Goal | Time | Target interval |
+| --- | --- | --- | --- |
+| Easy | 10 points | 35 seconds | 1.2 seconds |
+| Normal | 15 points | 30 seconds | 0.9 seconds |
+| Hard | 20 points | 25 seconds | 0.65 seconds |
 
-## Files
-- index.html: semantic structure, score, timer and controls.
-- style.css: responsive layout and CSS jerry can illustration.
-- script.js: random targets, score updates, countdown, game state and celebration.
+Collect yellow jerry cans for +1. Dirty water subtracts 2; scores stay at zero or higher. Collected targets disappear immediately. Reach the goal before time expires to win. Reset clears the round and timers. Keyboard players can Tab to targets and press Enter or Space.
 
-## Publish on GitHub Pages
-1. Open repository Settings > Pages.
-2. Select Deploy from a branch.
-3. Choose main and / (root), then Save.
-4. Wait for GitHub to publish, then use the Visit site link on that page.
-5. Test the live link in a private/incognito window before submitting.
+## Project 6 features
+- Three difficulty modes update the goal, countdown, target speed, progress bar, and instructions together.
+- Footer links to charity: water and its donation page.
+- Brand-inspired font stack and yellow jerry cans; Georgia mission text.
+- An array of milestone messages triggers at one-third, halfway, and two points before the goal, once per milestone per round.
+- Confetti on winning, with reduced-motion support.
+- Optional sound effects are not included.
 
-## Scope
-This prototype has no accounts, leaderboard, backend, or payment processing. Points are fictional and do not represent donations or actual water delivered. This is not an official charity: water game.
+## Run locally
+Open index.html in a browser. There are no dependencies or build steps.
 
-## Validation
-JavaScript syntax and game logic were checked for scoring, penalty floor, reset, timer cleanup, win state, confetti creation, expired clicks, and restart. Visual rendering and live GitHub Pages testing still need to be checked in a browser.
+## Checks
+JavaScript syntax and deterministic game checks passed for all modes, scoring, penalty floor, target removal, milestones, win, reset, timeout, and restart. The published page was checked in a browser, including playing an Easy round through to a win.
+
+This is not an official charity: water game. Points are for play only and do not represent donations or water delivered.
