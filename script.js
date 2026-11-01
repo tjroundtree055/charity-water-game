@@ -8,7 +8,20 @@ const resetButton = document.querySelector("#reset");
 const progress = document.querySelector("#progress");
 const progressBar = document.querySelector(".progress");
 const confetti = document.querySelector("#confetti");
-const goal = 15;
+const difficultySelect = document.querySelector("#difficulty");
+const goalDisplay = document.querySelector("#goal");
+const modeHelp = document.querySelector("#mode-help");
+const roundLabel = document.querySelector("#round-label");
+const instructions = document.querySelector("#instructions");
+const modes = {
+  easy: { goal: 10, seconds: 35, pace: 1200 },
+  normal: { goal: 15, seconds: 30, pace: 900 },
+  hard: { goal: 20, seconds: 25, pace: 650 }
+};
+let mode = modes.normal;
+let goal = mode.goal;
+let milestones = [];
+const reachedMilestones = new Set();
 let score = 0;
 let timeLeft = 30;
 let playing = false;
@@ -57,7 +70,7 @@ function showTargets() {
     const icon = document.createElement("span");
     icon.className = type === "can" ? "can-icon" : "dirty-icon";
     icon.setAttribute("aria-hidden", "true");
-    if (type === "dirty") icon.textContent = "💩";
+    if (type === "dirty") icon.textContent = "!";
     cells[index].classList.add(type);
     cells[index].appendChild(icon);
     cells[index].setAttribute("aria-label", type === "can" ? "Collect yellow jerry can: plus 1 point" : "Dirty water: minus 2 points");
@@ -71,8 +84,14 @@ function collect(index) {
   if (!type) return;
   score = type === "can" ? score + 1 : Math.max(0, score - 2);
   feedback.textContent = type === "can" ? "Clean collection! +1 point." : "Dirty water! −2 points. Look for yellow cans.";
-  if (type === "can" && score === 5) feedback.textContent = "5 points! You’re getting the hang of it.";
-  if (type === "can" && score === 10) feedback.textContent = "10 points! Just 5 more to reach your goal.";
+  if (type === "can") {
+    for (const milestone of milestones) {
+      if (score >= milestone.score && !reachedMilestones.has(milestone.score)) {
+        feedback.textContent = milestone.message;
+        reachedMilestones.add(milestone.score);
+      }
+    }
+  }
   updateScore();
   if (score >= goal) { finish(true); return; }
   // Remove a collected target immediately so it cannot be scored twice.
@@ -91,7 +110,22 @@ function resetGame() {
   stopTimers();
   playing = false;
   score = 0;
-  timeLeft = 30;
+  mode = modes[difficultySelect.value];
+  goal = mode.goal;
+  timeLeft = mode.seconds;
+  difficultySelect.disabled = false;
+  reachedMilestones.clear();
+  milestones = [
+    { score: Math.ceil(goal / 3), message: "Great start! Keep collecting yellow cans." },
+    { score: Math.ceil(goal / 2), message: "Halfway there! Every drop counts." },
+    { score: goal - 2, message: "Almost there! Just 2 more points." }
+  ];
+  goalDisplay.textContent = goal;
+  progressBar.setAttribute("aria-valuemax", goal);
+  progressBar.setAttribute("aria-label", "Progress toward " + goal + " points");
+  roundLabel.textContent = difficultySelect.value.toUpperCase() + " / " + mode.seconds + " SECONDS";
+  modeHelp.textContent = goal + " points · " + mode.seconds + " seconds · targets move every " + mode.pace / 1000 + " seconds";
+  instructions.textContent = "Tap or click a target before it moves. Keyboard: Tab to a target and press Enter or Space. Reach " + goal + " points before time runs out to win.";
   timeDisplay.textContent = timeLeft;
   updateScore();
   clearTargets();
@@ -104,12 +138,13 @@ function resetGame() {
 function startGame() {
   resetGame();
   playing = true;
-  deadline = Date.now() + 30000;
+  deadline = Date.now() + mode.seconds * 1000;
+  difficultySelect.disabled = true;
   startButton.disabled = true;
   startButton.textContent = "Game in progress";
   feedback.textContent = "Go! Collect yellow cans and avoid dirty water.";
   showTargets();
-  targetTimer = setInterval(showTargets, 900);
+  targetTimer = setInterval(showTargets, mode.pace);
   timer = setInterval(() => {
     timeLeft = Math.max(0, Math.ceil((deadline - Date.now()) / 1000));
     timeDisplay.textContent = timeLeft;
@@ -124,7 +159,8 @@ function finish(won) {
   clearTargets();
   startButton.disabled = false;
   startButton.textContent = "Play again →";
-  feedback.textContent = won ? "You won! 15 points collected. Every drop counts!" : "Time’s up! You collected " + score + " points. Try again!";
+  difficultySelect.disabled = false;
+  feedback.textContent = won ? "You won! " + goal + " points collected. Every drop counts!" : "Time’s up! You collected " + score + " points. Try again!";
   if (won) celebrate();
 }
 
@@ -144,4 +180,6 @@ function celebrate() {
 
 startButton.addEventListener("click", startGame);
 resetButton.addEventListener("click", resetGame);
+difficultySelect.addEventListener("change", resetGame);
 resetGame();
+
